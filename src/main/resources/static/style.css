@@ -1,0 +1,137 @@
+:root {
+  --navy: #1f3b64;
+  --ink: #1b2028;
+  --grey: #6b7686;
+  --line: #e2e6ec;
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --ok: #1d7a4c;
+  --warn: #b26a00;
+  --danger: #b3261e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 14px/1.55 "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 32px;
+  background: var(--navy);
+  color: #fff;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+.logo {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .14);
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+.brand h1 { margin: 0; font-size: 18px; font-weight: 600; }
+.brand p { margin: 2px 0 0; font-size: 12px; color: rgba(255, 255, 255, .7); }
+
+.stats { display: flex; gap: 10px; flex-wrap: wrap; }
+.chip {
+  min-width: 74px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .12);
+  text-align: center;
+}
+.chip b { display: block; font-size: 18px; }
+.chip span { font-size: 11px; color: rgba(255, 255, 255, .75); }
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 20px;
+  padding: 24px 32px 60px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; padding: 16px; }
+  .topbar { flex-direction: column; align-items: flex-start; }
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.panel h2 { margin: 0 0 14px; font-size: 15px; font-weight: 600; }
+
+.create form { display: flex; flex-direction: column; gap: 12px; }
+label { display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: var(--grey); }
+
+input, textarea, select, button {
+  font: inherit;
+  color: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+textarea { resize: vertical; }
+input:focus, textarea:focus, select:focus { outline: 2px solid rgba(31, 59, 100, .25); border-color: var(--navy); }
+
+button { cursor: pointer; background: #eef2f7; border-color: transparent; }
+button:hover { background: #e3e9f2; }
+button.primary { background: var(--navy); color: #fff; }
+button.primary:hover { background: #2a4d80; }
+
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.filters { display: flex; gap: 8px; }
+
+.hint { margin: 6px 0 0; font-size: 12px; color: var(--grey); min-height: 18px; }
+.hint.error { color: var(--danger); }
+.hint.ok { color: var(--ok); }
+
+.tickets { display: flex; flex-direction: column; gap: 12px; }
+
+.ticket {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: #fff;
+}
+.ticket-head { display: flex; align-items: center; gap: 8px; }
+.ticket .id { font-size: 12px; color: var(--grey); }
+.ticket h3 { margin: 6px 0 4px; font-size: 15px; }
+.ticket .desc { margin: 0 0 8px; color: var(--grey); font-size: 13px; white-space: pre-wrap; }
+.ticket .meta { display: flex; gap: 16px; font-size: 12px; color: var(--grey); margin-bottom: 10px; }
+.ticket .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.ticket .actions select { min-width: 120px; }
+
+.pill {
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.pill.status { background: #eef2f7; color: var(--navy); }
+.pill.status.s-OPEN { background: #fff4e5; color: var(--warn); }
+.pill.status.s-ASSIGNED { background: #e8f0fe; color: #1a56b3; }
+.pill.status.s-IN_PROGRESS { background: #e6f4ff; color: #0b6bcb; }
+.pill.status.s-RESOLVED { background: #e7f6ee; color: var(--ok); }
+.pill.status.s-CLOSED { background: #eef0f3; color: var(--grey); }
+.pill.priority { background: #f3f4f6; color: var(--grey); }
+.pill.priority.p-HIGH { background: #fff1e6; color: #a85400; }
+.pill.priority.p-URGENT { background: #fdecea; color: var(--danger); }
+
+.empty { padding: 28px; text-align: center; color: var(--grey); }

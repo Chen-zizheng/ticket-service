@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>工单管理系统</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">TI</span>
+    <div>
+      <h1>工单管理系统</h1>
+      <p>Spring Boot · MyBatis · H2 —— 派单走乐观锁，状态走状态机</p>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+</header>
+
+<main class="layout">
+  <section class="panel create">
+    <h2>新建工单</h2>
+    <form id="create-form">
+      <label>标题
+        <input id="title" maxlength="120" placeholder="例如：支付回调丢失" required/>
+      </label>
+      <label>描述
+        <textarea id="description" rows="3" maxlength="2000" placeholder="复现步骤 / 影响范围"></textarea>
+      </label>
+      <label>优先级
+        <select id="priority">
+          <option value="LOW">低</option>
+          <option value="MEDIUM" selected>中</option>
+          <option value="HIGH">高</option>
+          <option value="URGENT">紧急</option>
+        </select>
+      </label>
+      <button type="submit" class="primary">提交工单</button>
+      <p class="hint" id="create-msg"></p>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="toolbar">
+      <h2>工单列表</h2>
+      <div class="filters">
+        <select id="filter-status">
+          <option value="">全部状态</option>
+          <option value="OPEN">待处理</option>
+          <option value="ASSIGNED">已派单</option>
+          <option value="IN_PROGRESS">处理中</option>
+          <option value="RESOLVED">已解决</option>
+          <option value="CLOSED">已关闭</option>
+        </select>
+        <select id="filter-priority">
+          <option value="">全部优先级</option>
+          <option value="LOW">低</option>
+          <option value="MEDIUM">中</option>
+          <option value="HIGH">高</option>
+          <option value="URGENT">紧急</option>
+        </select>
+        <button id="refresh" type="button">刷新</button>
+      </div>
+    </div>
+    <p class="hint" id="list-summary"></p>
+    <div id="tickets" class="tickets"></div>
+  </section>
+</main>
+
+<template id="ticket-tpl">
+  <article class="ticket">
+    <div class="ticket-head">
+      <span class="id">#<b class="tid"></b></span>
+      <span class="pill status"></span>
+      <span class="pill priority"></span>
+    </div>
+    <h3 class="title"></h3>
+    <p class="desc"></p>
+    <div class="meta">
+      <span class="assignee"></span>
+      <span class="time"></span>
+    </div>
+    <div class="actions">
+      <select class="assignee-select"></select>
+      <button class="assign" type="button">派单</button>
+      <button class="advance" type="button">推进状态</button>
+    </div>
+  </article>
+</template>
+
+<script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.log
+run.err
+.DS_Store
+.idea/
+*.iml

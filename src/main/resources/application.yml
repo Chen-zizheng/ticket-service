@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ticket-service
+  datasource:
+    url: jdbc:h2:mem:ticket;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  sql:
+    init:
+      # 不写这一行，Windows 上 H2 会用平台默认编码（GBK）读 data.sql，中文直接变乱码
+      encoding: UTF-8
+      mode: always
+      schema-locations: classpath:db/schema.sql
+      data-locations: classpath:db/data.sql
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.czz.ticket.domain
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com.czz.ticket.mapper: info

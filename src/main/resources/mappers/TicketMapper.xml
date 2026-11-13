@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.czz.ticket.mapper.TicketMapper">
+
+    <sql id="cols">
+        id, title, description, priority, status, assignee_id, version, created_at, updated_at, resolved_at
+    </sql>
+
+    <insert id="insert" parameterType="com.czz.ticket.domain.Ticket"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ticket (title, description, priority, status, assignee_id, version, created_at, updated_at)
+        VALUES (#{title}, #{description}, #{priority}, #{status}, #{assigneeId}, 0, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="findById" resultType="com.czz.ticket.domain.Ticket">
+        SELECT <include refid="cols"/> FROM ticket WHERE id = #{id}
+    </select>
+
+    <sql id="filters">
+        <where>
+            <if test="status != null">AND status = #{status}</if>
+            <if test="priority != null">AND priority = #{priority}</if>
+            <if test="assigneeId != null">AND assignee_id = #{assigneeId}</if>
+        </where>
+    </sql>
+
+    <select id="findPage" resultType="com.czz.ticket.domain.Ticket">
+        SELECT <include refid="cols"/>
+        FROM ticket
+        <include refid="filters"/>
+        ORDER BY created_at DESC, id DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM ticket
+        <include refid="filters"/>
+    </select>
+
+    <update id="assign">
+        UPDATE ticket
+           SET assignee_id = #{assigneeId},
+               status      = 'ASSIGNED',
+               version     = version + 1,
+               updated_at  = #{now}
+         WHERE id = #{id}
+           AND version = #{expectedVersion}
+           AND status = #{fromStatus}
+    </update>
+
+    <update id="changeStatus">
+        UPDATE ticket
+           SET status      = #{toStatus},
+               version     = version + 1,
+               updated_at  = #{now},
+               resolved_at = #{resolvedAt}
+         WHERE id = #{id}
+           AND version = #{expectedVersion}
+           AND status = #{fromStatus}
+    </update>
+
+    <insert id="insertAssignment">
+        INSERT INTO assignment (ticket_id, assignee_id, note, created_at)
+        VALUES (#{ticketId}, #{assigneeId}, #{note}, #{now})
+    </insert>
+
+    <select id="countGroupByStatus" resultType="com.czz.ticket.domain.Ticket">
+        SELECT status AS status, COUNT(*) AS version FROM ticket GROUP BY status
+    </select>
+
+    <select id="countGroupByPriority" resultType="com.czz.ticket.domain.Ticket">
+        SELECT priority AS status, COUNT(*) AS version FROM ticket GROUP BY priority
+    </select>
+
+    <select id="countGroupByAssignee" resultType="com.czz.ticket.domain.Ticket">
+        SELECT COALESCE(CAST(assignee_id AS VARCHAR), 'unassigned') AS status,
+               COUNT(*) AS version
+          FROM ticket
+         GROUP BY assignee_id
+    </select>
+</mapper>
