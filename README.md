@@ -107,7 +107,7 @@ UPDATE ticket SET assignee_id = #{assigneeId}, status = 'ASSIGNED', version = ve
 （`config/SqlCounter.java`），用例直接断言 `count() <= 3`——N+1 这种问题会悄悄回来，靠人眼 review 不可靠。
 
 **3. `size` 在服务端夹到 100。**
-传 `size=100000` 不会真的把 10 万行读进内存。用例覆盖了 `size=1000` → 返回 100 条的场景。
+传 `size=100000` 返回 100 条，用例覆盖了 `size=1000` → 100 条这条路径。
 
 **4. 状态与派单共用一个"版本号"。**
 两者都会改 `ticket` 行，共用 `version` 之后"派单"和"改状态"能互相检测到冲突，不需要额外的锁表；
